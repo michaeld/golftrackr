@@ -12,5 +12,7 @@ gto$date_of_play <- as.factor(gto$date_of_play)
 ```{r, echo=FALSE}
 #types of putts per round
 ggplot(gto, aes(date_of_play, fill = as.ordered(putts))) + geom_bar()  + ylab("Putts Observed") + xlab("Date of Play") + ggtitle("Types of Putts per Round") 
+
+ggplot(gto[gto$puttable_par == 'Y',], aes(hole, fill = puttable_par)) + geom_bar(stat="bin") + scale_x_discrete() 
 ```
 
