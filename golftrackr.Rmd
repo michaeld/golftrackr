@@ -1,0 +1,16 @@
+---
+title: "golftrackr"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(ggplot2)
+gto <- read.csv('~/Downloads/gt-observations.csv', na.strings=c("", "NA"))
+gto$date_of_play <- as.factor(gto$date_of_play)
+```
+
+```{r, echo=FALSE}
+#types of putts per round
+ggplot(gto, aes(date_of_play, fill = as.ordered(putts))) + geom_bar()  + ylab("Putts Observed") + xlab("Date of Play") + ggtitle("Types of Putts per Round") 
+```
+
