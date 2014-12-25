@@ -6,8 +6,17 @@ library(ggplot2)
 gto <- read.csv('~/projects/golftrackr/gt-observations.csv', na.strings=c("", "NA"))
 gto$date_of_play <- as.ordered(as.Date(gto$date_of_play, "%m/%d/%Y"))
 ```
+# Scoring
 
-## Per Round
+```{r, echo=FALSE}
+ggplot(gto, aes(as.factor(plus_minus_par))) + geom_histogram() + xlab('Scores') + facet_grid(~date_of_play) + ggtitle("Scoring Distribution by Round")
+```
+
+```{r, echo=FALSE}
+ggplot(gto, aes(factor(1), fill = as.ordered(plus_minus_par))) + geom_bar() + facet_wrap(~hole) + coord_polar(theta="y") + labs(fill="score minus par") + ggtitle('Scoring Distribution per Hole')
+```
+
+# Putting
 ```{r, echo=FALSE}
 #types of putts per round
 ggplot(gto, aes(x=factor(1), fill = as.ordered(putts))) + geom_bar()  + ylab("Putts Observed") + xlab("Breakdown of Putts") + ggtitle("Types of Putts per Round") + facet_grid(~date_of_play) + labs(fill='type of putt')
@@ -17,13 +26,6 @@ ggplot(gto[gto$puttable_par == 'Y', ], aes(factor(1), fill = as.ordered(puttable
 
 #putts per round
 ggplot(gto, aes(factor(1), putts)) + geom_bar(stat = "identity")  + ylab("Count") + xlab('') + ggtitle("Putts per Round") + facet_grid(~date_of_play) + xlab('Putts')
-
-ggplot(gto[!is.na(gto$second_shot_club),], aes(x=factor(1), fill = second_shot_club)) +geom_bar(width=1) + facet_grid(~date_of_play) + xlab('') + ylab('') + ggtitle('Second Shot Club Selection by Round')
-```
-
-## Per Hole
-```{r, echo=FALSE}
-ggplot(gto[gto$puttable_par == 'Y',], aes(factor(1), fill = puttable_par)) + geom_bar() + facet_grid(~hole) + xlab('Puttable Pars') + ggtitle('Puttable Pars by Hole')
 ```
 
 #### Observations
@@ -32,12 +34,20 @@ ggplot(gto[gto$puttable_par == 'Y',], aes(factor(1), fill = puttable_par)) + geo
 * Strong on Par 3's - 4,7,12,14
 
 ```{r, echo=FALSE}
-ggplot(gto, aes(factor(1), fill = as.ordered(plus_minus_par))) + geom_bar() + facet_wrap(~hole) + coord_polar(theta="y") + labs(fill="score minus par") + ggtitle('Score against Par per Hole')
+ggplot(gto[gto$puttable_par == 'Y',], aes(factor(1), fill = puttable_par)) + geom_bar() + facet_grid(~hole) + xlab('Puttable Pars') + ggtitle('Puttable Pars by Hole')
 ```
 
-#### Distribution of Scores
-```{r, echo=FALSE}
-ggplot(gto, aes(fir, as.factor(plus_minus_par))) + geom_point(position=position_jitter(w=0.1, h=0.1)) + ggtitle("Scores when FIR")
+# Shot Selection
 
-ggplot(gto, aes(gir, as.factor(plus_minus_par))) + geom_point(position=position_jitter(w=0.1, h=0.1)) + ggtitle('Scores when GIR')
+```{r,echo=FALSE}
+ggplot(gto[!is.na(gto$second_shot_club),], aes(x=factor(1), fill = second_shot_club)) +geom_bar(width=1) + facet_grid(~date_of_play) + xlab('') + ylab('') + ggtitle('Second Shot Club Selection by Round')
+```
+
+# Aggregates
+```{r, echo=FALSE}
+ggplot(gto, aes(fir, as.factor(plus_minus_par))) + geom_point(position=position_jitter(w=0.1, h=0.1)) + ggtitle("Scores when FIR") + ylab('Scores against Par')
+
+ggplot(gto, aes(gir, as.factor(plus_minus_par))) + geom_point(position=position_jitter(w=0.1, h=0.1)) + ggtitle('Scores when GIR') + ylab('Scores against Par')
+
+ggplot(gto, aes(as.factor(plus_minus_par))) + geom_histogram() + xlab('Scores against Par') + ggtitle("Total Scoring")
 ```
