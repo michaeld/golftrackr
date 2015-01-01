@@ -9,6 +9,8 @@ gto$date_of_play <- as.ordered(as.Date(gto$date_of_play, "%m/%d/%Y"))
 # Scoring
 
 ```{r, echo=FALSE}
+ggplot(gto, aes(factor(1), score)) + geom_bar(stat="identity") + xlab('Score') + ggtitle("Score per Round") + facet_grid(~date_of_play)
+
 ggplot(gto, aes(as.factor(plus_minus_par))) + geom_histogram() + xlab('Scores') + facet_grid(~date_of_play) + ggtitle("Scoring Distribution by Round")
 ```
 
@@ -49,5 +51,5 @@ ggplot(gto, aes(fir, as.factor(plus_minus_par))) + geom_point(position=position_
 
 ggplot(gto, aes(gir, as.factor(plus_minus_par))) + geom_point(position=position_jitter(w=0.1, h=0.1)) + ggtitle('Scores when GIR') + ylab('Scores against Par')
 
-ggplot(gto, aes(as.factor(plus_minus_par))) + geom_histogram() + xlab('Scores against Par') + ggtitle("Total Scoring")
+ggplot(gto, aes(as.factor(plus_minus_par))) + geom_histogram() + xlab('Scores against Par') + ggtitle("Scoring Distribution Overall")
 ```
